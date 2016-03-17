@@ -18,7 +18,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.deepu.language.detectors.MyLanguageDetector;
+import com.deepu.language.detectors.LanguageDetector;
 
 /**
  * Read files from file path and detect language
@@ -49,7 +49,7 @@ public class DetectLanguage {
 		for (Locale locale : locales) {
 			languageSet.add(locale.getDisplayLanguage().toLowerCase());
 		}
-		LOG.info("Available Languages names :: " + languageSet);
+		LOG.debug("Available Languages names :: " + languageSet);
 		return languageSet;
 	}
 
@@ -63,7 +63,7 @@ public class DetectLanguage {
 		for (Locale locale : locales) {
 			languageMap.put(locale.getLanguage(), locale.getDisplayLanguage().toLowerCase());
 		}
-		LOG.info("Available Languages code//names:: " + languageMap);
+		LOG.debug("Available Languages code :: names :: " + languageMap);
 		return languageMap;
 	}
 
@@ -147,7 +147,7 @@ public class DetectLanguage {
 				}
 			}
 		} catch (FileNotFoundException fe) {
-			LOG.info("FileNotFoundException occured :: " + fe.getMessage());
+			LOG.error("FileNotFoundException occured :: " + fe.getMessage());
 		} finally {
 			if (scanner != null) {
 				scanner.close();
@@ -158,13 +158,14 @@ public class DetectLanguage {
 
 	/**
 	 * Accept a String and detect the language of that
+	 * 
 	 * @param fileContent
 	 * @return String value of detected Language
 	 */
 	public String detectLanguage(String fileContent) {
 		String detectedLangugage = "";
 		if (StringUtils.isNotBlank(fileContent)) {
-			MyLanguageDetector detector = MyLanguageDetector.getInstance();
+			LanguageDetector detector = LanguageDetector.getInstance();
 			detectedLangugage = detector.detectLanguage(fileContent);
 		}
 		return detectedLangugage;
