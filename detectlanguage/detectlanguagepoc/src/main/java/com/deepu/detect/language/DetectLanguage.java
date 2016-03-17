@@ -49,7 +49,7 @@ public class DetectLanguage {
 		for (Locale locale : locales) {
 			languageSet.add(locale.getDisplayLanguage().toLowerCase());
 		}
-		LOG.debug("Available Languages names :: " + languageSet);
+		LOG.info("Available Languages names :: " + languageSet);
 		return languageSet;
 	}
 
@@ -82,9 +82,9 @@ public class DetectLanguage {
 				} else {
 					// Detect Language from content
 					String fileContent = readUnknownFile(file);
-					String detectedLangugage = detectLanguage(fileContent);
-					if (StringUtils.isNotBlank(detectedLangugage)) {
-						String displayLanguage = new Locale(detectedLangugage).getDisplayLanguage().toLowerCase();
+					String detectedLanguage = detectLanguage(fileContent);
+					if (StringUtils.isNotBlank(detectedLanguage)) {
+						String displayLanguage = new Locale(detectedLanguage).getDisplayLanguage().toLowerCase();
 						LOG.info(WordUtils.capitalizeFully(displayLanguage) + " is the language of the file "
 								+ file.getName());
 					} else {
