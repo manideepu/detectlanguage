@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;;
@@ -18,6 +19,7 @@ public class DetectLanguageTest {
 
 	DetectLanguage detectLanguage = new DetectLanguage();
 	private final static String INPUT_FILE_PATH = "/src/main/resources/input/";
+	private final static String EMPTY_INPUT_FILE_PATH = "/src/main/resources/emptyinput/";
 	private final static String EMPTY_UNKNOWN_INPUT_FILE_NAME = "unknown.txt";
 	private final static String NONEMPTY_UNKNOWN_INPUT_FILE_NAME = "text.txt";
 	private final static String NOTPRESENT_UNKNOWN_INPUT_FILE_NAME = "notpresent.txt";
@@ -91,7 +93,7 @@ public class DetectLanguageTest {
 		assertNotNull(content);
 		assertTrue(content.length() == 0);
 	}
-	
+
 	@Test
 	public void testReadUnknownFileFileNotPresent() {
 		String folderName = detectLanguage.getFileInputFolderName(INPUT_FILE_PATH);
@@ -144,11 +146,114 @@ public class DetectLanguageTest {
 	}
 
 	@Test
-	public void testDetectLanguageSpanish() {
+	public void testGetFileNameWithoutExtension() {
+		String fileName = "english";
+		String language = detectLanguage.getFileNameWithoutExtension(fileName);
+		assertEquals("english", language);
+	}
+
+	@Test
+	public void testGetFileNameWithTxtExtension() {
+		String fileName = "english.txt";
+		String language = detectLanguage.getFileNameWithoutExtension(fileName);
+		assertEquals("english", language);
+	}
+
+	@Test
+	public void testGetFileNameWithNull() {
+		String fileName = null;
+		String language = detectLanguage.getFileNameWithoutExtension(fileName);
+		assertEquals("", language);
+	}
+
+	@Test
+	public void testGetFileNameWithEmptyString() {
+		String fileName = "";
+		String language = detectLanguage.getFileNameWithoutExtension(fileName);
+		assertEquals("", language);
+	}
+
+	@Test
+	public void testGetFileNameWithSpecialCharString() {
+		String fileName = "english,.;";
+		String language = detectLanguage.getFileNameWithoutExtension(fileName);
+		assertEquals("english", language);
+	}
+
+	@Test
+	public void testGetFileNameWithDigitExtn() {
+		String fileName = "english.1";
+		String language = detectLanguage.getFileNameWithoutExtension(fileName);
+		assertEquals("english", language);
+	}
+
+	@Test
+	public void testGetFileNameWithCapDigitExtn() {
+		String fileName = "ENGLISH.2";
+		String language = detectLanguage.getFileNameWithoutExtension(fileName);
+		assertEquals("ENGLISH", language);
+	}
+
+	@Test
+	public void testGetFileNameWithCapCharTxtExtn() {
+		String fileName = "French.txt";
+		String language = detectLanguage.getFileNameWithoutExtension(fileName);
+		assertEquals("French", language);
+	}
+
+	@Test
+	public void testGetFileNameWithCharUnderScoreLangTxtExtn() {
+		String fileName = "text_French.txt";
+		String language = detectLanguage.getFileNameWithoutExtension(fileName);
+		assertEquals("text", language);
+	}
+
+	@Test
+	public void testDetectLanguageDanish() {
+		String content = "Hvordan har du det";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("da", language);
+	}
+
+	@Test
+	public void testDetectLanguageGerman() {
 		String content = "Wie geht es Ihnen";
 		String language = detectLanguage.detectLanguage(content);
 		assertNotNull(language);
 		assertEquals("de", language);
+	}
+
+	@Test
+	public void testDetectLanguageEnglish() {
+		String content = "How are you";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("en", language);
+	}
+
+	@Test
+	public void testDetectLanguageSpanish() {
+		String content = "adios";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("es", language);
+	}
+
+	@Test
+	public void testDetectLanguageEstonian() {
+		String content = "head aega";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("et", language);
+	}
+
+	@Test
+	public void testDetectLanguageFinnish() {
+		String content = "Kuinka voit";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("fi", language);
 	}
 
 	@Test
@@ -160,16 +265,131 @@ public class DetectLanguageTest {
 	}
 
 	@Test
+	public void testDetectLanguageHungarian() {
+		String content = "hogy vagy";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("hu", language);
+	}
+
+	@Test
+	public void testDetectLanguageItalian() {
+		String content = "arrivederci";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("it", language);
+	}
+
+	@Test
+	public void testDetectLanguageLithuanian() {
+		String content = "kaip laikaisi";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("lt", language);
+	}
+
+	@Test
+	public void testDetectLanguageLatvian() {
+		String content = "kur tu esi";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("lv", language);
+	}
+
+	@Test
+	public void testDetectLanguageDutch() {
+		String content = "waar ben jij";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("nl", language);
+	}
+
+	@Test
+	public void testDetectLanguagePolish() {
+		String content = "Dziękuję Ci";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("pl", language);
+	}
+
+	@Test
+	public void testDetectLanguagePortuguese() {
+		String content = "obrigado";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("pt", language);
+	}
+
+	@Test
+	public void testDetectLanguageSlovak() {
+		String content = "koľko máš rokov";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("sk", language);
+	}
+
+	@Test
+	public void testDetectLanguageSwedish() {
+		String content = "avtio";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("sv", language);
+	}
+
+	@Test
 	public void testDetectLanguageRussian() {
 		String content = "Как делаss";
 		String language = detectLanguage.detectLanguage(content);
 		assertNotNull(language);
 		assertEquals("ru", language);
 	}
-	
+
 	@Test
-	public void testGetFileNameWithoutExtension(){
-		
+	public void testProcessAvailableFilesNullInput() {
+		String inputFolderPath = null;
+		Set<String> languageSet = null;
+		detectLanguage.processAvailableFiles(inputFolderPath, languageSet);
+		assertTrue(true);
+	}
+
+	@Test
+	public void testProcessAvailableFilesEmptySpaceInput() {
+		String inputFolderPath = "";
+		Set<String> languageSet = new HashSet<String>();
+		detectLanguage.processAvailableFiles(inputFolderPath, languageSet);
+		assertTrue(true);
+	}
+
+	@Test
+	public void testProcessAvailableFiles() {
+
+		Set<String> languageSet = detectLanguage.getDisplayLanguagesLowerCase();
+		assertNotNull(languageSet);
+		assertTrue(detectLanguage.getDisplayLanguagesLowerCase().size() > 0);
+		assertTrue(detectLanguage.getDisplayLanguagesLowerCase().contains("english"));
+		assertTrue(detectLanguage.getDisplayLanguagesLowerCase().contains("french"));
+		assertTrue(detectLanguage.getDisplayLanguagesLowerCase().contains("german"));
+		assertTrue(detectLanguage.getDisplayLanguagesLowerCase().contains("russian"));
+		assertTrue(detectLanguage.getDisplayLanguagesLowerCase().contains("spanish"));
+
+		detectLanguage.processAvailableFiles(INPUT_FILE_PATH, languageSet);
+		assertTrue(true);
+	}
+
+	@Test
+	public void testProcessAvailableFilesNoFiles() {
+
+		Set<String> languageSet = detectLanguage.getDisplayLanguagesLowerCase();
+		assertNotNull(languageSet);
+		assertTrue(detectLanguage.getDisplayLanguagesLowerCase().size() > 0);
+		assertTrue(detectLanguage.getDisplayLanguagesLowerCase().contains("english"));
+		assertTrue(detectLanguage.getDisplayLanguagesLowerCase().contains("french"));
+		assertTrue(detectLanguage.getDisplayLanguagesLowerCase().contains("german"));
+		assertTrue(detectLanguage.getDisplayLanguagesLowerCase().contains("russian"));
+		assertTrue(detectLanguage.getDisplayLanguagesLowerCase().contains("spanish"));
+
+		detectLanguage.processAvailableFiles(EMPTY_INPUT_FILE_PATH, languageSet);
+		assertTrue(true);
 	}
 
 }

@@ -21,10 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import com.deepu.language.detectors.MyLanguageDetector;
 
 /**
- * 
  * Read files from file path and detect language
- * 
- *
  */
 public class DetectLanguage {
 
@@ -43,7 +40,7 @@ public class DetectLanguage {
 
 	/**
 	 * Get the DisplayLanguges in Lowercase
-	 * 
+	 *
 	 * @return Set<String>
 	 */
 	public Set<String> getDisplayLanguagesLowerCase() {
@@ -59,7 +56,6 @@ public class DetectLanguage {
 	/**
 	 * @return Map<String, String> ; key = Locale Languages; value = Display
 	 *         Language in Lower case
-	 * 
 	 */
 	public Map<String, String> getLocaleLanguagesAndDisplayLanguage() {
 		Map<String, String> languageMap = new HashMap<String, String>();
@@ -73,7 +69,7 @@ public class DetectLanguage {
 
 	@SuppressWarnings("unchecked")
 	public void processAvailableFiles(String inputFolderPath, Set<String> languageSet) {
-		if (StringUtils.isNotBlank(inputFolderPath)) {
+		if (StringUtils.isNotBlank(inputFolderPath) && languageSet != null && languageSet.size() > 0) {
 			List<String> unknownFiles = new ArrayList<String>();
 			File inputFolder = new File(getFileInputFolderName(inputFolderPath));
 			Iterator<File> iterator = FileUtils.iterateFiles(inputFolder, null, false);
@@ -103,7 +99,8 @@ public class DetectLanguage {
 	}
 
 	/**
-	 * @param inputFolderPath relative folder
+	 * @param inputFolderPath
+	 *            relative folder
 	 * @return String Complete folder name in the file system
 	 */
 	public String getFileInputFolderName(String inputFolderPath) {
@@ -112,14 +109,22 @@ public class DetectLanguage {
 		return userDirectory.toString();
 	}
 
+	/**
+	 * Get the file name with extension
+	 * 
+	 * @param fileName
+	 * @return fileName without extension
+	 */
 	public String getFileNameWithoutExtension(String fileName) {
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < fileName.length(); i++) {
-			if (Character.isLetter(fileName.charAt(i))) {
-				sb.append(fileName.charAt(i));
-			} else {
-				// Break the loop if a special character is found.
-				break;
+		if (StringUtils.isNotBlank(fileName)) {
+			for (int i = 0; i < fileName.length(); i++) {
+				if (Character.isLetter(fileName.charAt(i))) {
+					sb.append(fileName.charAt(i));
+				} else {
+					// Break the loop if a special character is found.
+					break;
+				}
 			}
 		}
 		return sb.toString();
@@ -127,7 +132,7 @@ public class DetectLanguage {
 
 	/**
 	 * Read a file and return the file content as String
-	 * 
+	 *
 	 * @param file
 	 * @return String
 	 */
@@ -151,6 +156,11 @@ public class DetectLanguage {
 		return content;
 	}
 
+	/**
+	 * Accept a String and detect the language of that
+	 * @param fileContent
+	 * @return String value of detected Language
+	 */
 	public String detectLanguage(String fileContent) {
 		String detectedLangugage = "";
 		if (StringUtils.isNotBlank(fileContent)) {
