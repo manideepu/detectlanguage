@@ -183,12 +183,60 @@ public class LanguageDetectorTest {
 	}
 
 	@Test
+	public void testDetectLanguageEnglishSpecialCharColon() {
+		String content = "The world is a stage: play your role well.";
+		String language = languageDetector.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("en", language);
+	}
+
+	@Test
+	public void testDetectLanguageFrenchSpecialCharColon() {
+		String content = "Le monde est une scene : jouer votre role bien.";
+		String language = languageDetector.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("fr", language);
+	}
+
+	@Test
+	public void testDetectLanguageEnglishSpecialCharSemiColon() {
+		String content = "The match was really nice; but we lost that";
+		String language = languageDetector.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("en", language);
+	}
+
+	@Test
+	public void testDetectLanguageFrenchSpecialCharSemiColon() {
+		String content = "Le match etait vraiment agreable ; mais nous avons perdu cette";
+		String language = languageDetector.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("fr", language);
+	}
+
+	@Test
+	public void testDetectLanguageEnglishSpecialCharColonCommaDot() {
+		String content = "The match was really nice: two stumpings, one runout and five wickets for one bowler.";
+		String language = languageDetector.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("en", language);
+	}
+
+	@Test
+	public void testDetectLanguageFrenchSpecialCharColonCommaDot() {
+		String content = "Le match etait vraiment agreable : deux stumpings , un voile et cinq guichets pour un chapeau melon.";
+		String language = languageDetector.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("fr", language);
+	}
+
+	@Test
 	public void testDetectLanguageStringLanguageRestrictionsEmptyContent() {
 		Set<String> languageRestrictions = getLanguageRestrictions();
 		assertNotNull(languageRestrictions);
 		assertTrue(languageRestrictions.size() > 0);
 
-		String aText = "";
+		String aText = " ";
 		String language = languageDetector.detectLanguage(aText, languageRestrictions);
 		assertNull(language);
 
@@ -220,6 +268,28 @@ public class LanguageDetectorTest {
 
 	@Test
 	public void testDetectLanguageStringLanguageRestrictionsNullSet() {
+		Set<String> languageRestrictions = null;
+		assertNull(languageRestrictions);
+
+		String aText = "How are you";
+		String language = languageDetector.detectLanguage(aText, languageRestrictions);
+		assertNull(language);
+
+	}
+
+	@Test
+	public void testDetectLanguageStringLanguageRestrictionsEmptySet() {
+		Set<String> languageRestrictions = new HashSet<String>();
+		assertNotNull(languageRestrictions);
+
+		String aText = "How are you";
+		String language = languageDetector.detectLanguage(aText, languageRestrictions);
+		assertNull(language);
+
+	}
+
+	@Test
+	public void testDetectLanguageStringLanguageRestrictionsNullTextNullSet() {
 		Set<String> languageRestrictions = null;
 		assertNull(languageRestrictions);
 

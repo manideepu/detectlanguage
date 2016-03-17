@@ -20,6 +20,7 @@ public class DetectLanguageTest {
 	DetectLanguage detectLanguage = new DetectLanguage();
 	private final static String INPUT_FILE_PATH = "/src/main/resources/input/";
 	private final static String EMPTY_INPUT_FILE_PATH = "/src/main/resources/emptyinput/";
+	private final static String NOTPRESENT_INPUT_FILE_PATH = "/src/main/resources/emptyinput/";
 	private final static String EMPTY_UNKNOWN_INPUT_FILE_NAME = "unknown.txt";
 	private final static String NONEMPTY_UNKNOWN_INPUT_FILE_NAME = "text.txt";
 	private final static String NOTPRESENT_UNKNOWN_INPUT_FILE_NAME = "notpresent.txt";
@@ -107,6 +108,18 @@ public class DetectLanguageTest {
 	}
 
 	@Test
+	public void testReadUnknownFileFolderNotPresent() {
+		String folderName = detectLanguage.getFileInputFolderName(NOTPRESENT_INPUT_FILE_PATH);
+		assertNotNull(folderName);
+		assertTrue(folderName.length() > 0);
+		File file = new File(folderName + NOTPRESENT_UNKNOWN_INPUT_FILE_NAME);
+		assertNotNull(file);
+		String content = detectLanguage.readUnknownFile(file);
+		assertNotNull(content);
+		assertTrue(content.length() == 0);
+	}
+
+	@Test
 	public void testGetFileInputFolder() {
 		String folderName = detectLanguage.getFileInputFolderName(INPUT_FILE_PATH);
 		assertNotNull(folderName);
@@ -141,6 +154,13 @@ public class DetectLanguageTest {
 	@Test
 	public void testDetectLanguageEmpty() {
 		String language = detectLanguage.detectLanguage("");
+		assertNotNull(language);
+		assertTrue(language.length() == 0);
+	}
+
+	@Test
+	public void testDetectLanguageSpaces() {
+		String language = detectLanguage.detectLanguage("  ");
 		assertNotNull(language);
 		assertTrue(language.length() == 0);
 	}
@@ -345,6 +365,54 @@ public class DetectLanguageTest {
 	}
 
 	@Test
+	public void testDetectLanguageEnglishSpecialCharColon() {
+		String content = "The world is a stage: play your role well.";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("en", language);
+	}
+	
+		@Test
+	public void testDetectLanguageFrenchSpecialCharColon() {
+		String content = "Le monde est une scene : jouer votre role bien.";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("fr", language);
+	}
+
+	@Test
+	public void testDetectLanguageEnglishSpecialCharSemiColon() {
+		String content = "The match was really nice; but we lost that";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("en", language);
+	}
+
+	@Test
+	public void testDetectLanguageFrenchSpecialCharSemiColon() {
+		String content = "Le match etait vraiment agreable ; mais nous avons perdu cette";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("fr", language);
+	}
+
+	@Test
+	public void testDetectLanguageEnglishSpecialCharColonCommaDot() {
+		String content = "The match was really nice: two stumpings, one runout and five wickets for one bowler.";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("en", language);
+	}
+
+	@Test
+	public void testDetectLanguageFrenchSpecialCharColonCommaDot() {
+		String content = "Le match etait vraiment agreable : deux stumpings , un voile et cinq guichets pour un chapeau melon.";
+		String language = detectLanguage.detectLanguage(content);
+		assertNotNull(language);
+		assertEquals("fr", language);
+	}
+
+	@Test
 	public void testProcessAvailableFilesNullInput() {
 		String inputFolderPath = null;
 		Set<String> languageSet = null;
@@ -355,8 +423,22 @@ public class DetectLanguageTest {
 	@Test
 	public void testProcessAvailableFilesEmptySpaceInput() {
 		String inputFolderPath = "";
-		Set<String> languageSet = new HashSet<String>();
+		Set<String> languageSet = null;
 		detectLanguage.processAvailableFiles(inputFolderPath, languageSet);
+		assertTrue(true);
+	}
+
+	@Test
+	public void testProcessAvailableFilesNullLanguage() {
+		Set<String> languageSet = null;
+		detectLanguage.processAvailableFiles(INPUT_FILE_PATH, languageSet);
+		assertTrue(true);
+	}
+
+	@Test
+	public void testProcessAvailableFilesEmptyLanguage() {
+		Set<String> languageSet = new HashSet<String>();
+		detectLanguage.processAvailableFiles(INPUT_FILE_PATH, languageSet);
 		assertTrue(true);
 	}
 

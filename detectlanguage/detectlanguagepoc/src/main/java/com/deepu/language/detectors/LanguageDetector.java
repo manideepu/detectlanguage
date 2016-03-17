@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -82,36 +83,36 @@ public class LanguageDetector {
 	/**
 	 * Performs a language detection the whole set of possible languages.
 	 * 
-	 * @param aText
+	 * @param fileContent
 	 * @return
 	 */
-	public String detectLanguage(CharSequence aText) {
-		return detectLanguage(aText, statsMap.keySet());
+	public String detectLanguage(CharSequence fileContent) {
+		return detectLanguage(fileContent, statsMap.keySet());
 	}
 
 	/**
 	 * 
 	 * Performs a language detection to the set of provided languages
 	 * 
-	 * @param aText
-	 * @param languageRestrictions
+	 * @param fileContent
+	 * @param languageSet
 	 * @return
 	 */
-	public String detectLanguage(CharSequence aText, Set<String> languageRestrictions) {
-		String bestLang = null;
-		if (aText != null && languageRestrictions != null && !languageRestrictions.isEmpty()) {
+	public String detectLanguage(CharSequence fileContent, Set<String> languageSet) {
+		String bestMatchedLanguage = null;
+		if (StringUtils.isNotBlank(fileContent) && languageSet != null && !languageSet.isEmpty()) {
 			double best = 0;
 			for (Map.Entry<String, AbstractGramTree> entry : statsMap.entrySet()) {
 				final String currentLanguage = entry.getKey();
-				if (languageRestrictions.contains(currentLanguage)) {
-					double score = entry.getValue().scoreText(aText);
+				if (languageSet.contains(currentLanguage)) {
+					double score = entry.getValue().scoreText(fileContent);
 					if (score > best) {
 						best = score;
-						bestLang = currentLanguage;
+						bestMatchedLanguage = currentLanguage;
 					}
 				}
 			}
 		}
-		return bestLang;
+		return bestMatchedLanguage;
 	}
 }
