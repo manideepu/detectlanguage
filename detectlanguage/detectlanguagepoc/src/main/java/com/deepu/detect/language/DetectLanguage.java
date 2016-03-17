@@ -49,7 +49,7 @@ public class DetectLanguage {
 		for (Locale locale : locales) {
 			languageSet.add(locale.getDisplayLanguage().toLowerCase());
 		}
-		LOG.info("Available Languages names :: " + languageSet);
+		LOG.debug("Available Languages names :: " + languageSet);
 		return languageSet;
 	}
 
