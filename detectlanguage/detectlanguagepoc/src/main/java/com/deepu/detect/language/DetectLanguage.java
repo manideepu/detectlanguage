@@ -165,7 +165,7 @@ public class DetectLanguage {
 		String detectedLangugage = "";
 		if (StringUtils.isNotBlank(fileContent)) {
 			MyLanguageDetector detector = MyLanguageDetector.getInstance();
-			detectedLangugage = detector.detectLang(fileContent);
+			detectedLangugage = detector.detectLanguage(fileContent);
 		}
 		return detectedLangugage;
 	}

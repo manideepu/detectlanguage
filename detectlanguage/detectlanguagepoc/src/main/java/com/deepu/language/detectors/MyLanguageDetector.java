@@ -44,13 +44,9 @@ public class MyLanguageDetector extends BaseLangDetector {
 
 	private static final Log LOG = LogFactory.getLog(MyLanguageDetector.class);
 
-	private enum LanguageEnum {
-		bg, cs, da, de, el, en, es, et, fi, fr, hu, it, lt, lv, nl, pl, pt, ro, sk, sl, sv, ru, zh, ja, ko
-	};
-
 	private final static MyLanguageDetector INSTANCE = new MyLanguageDetector();
 
-	protected MyLanguageDetector() {
+	public MyLanguageDetector() {
 		super();
 		ClassLoader loader = MyLanguageDetector.class.getClassLoader();
 		for (LanguageEnum lang : LanguageEnum.values()) {
@@ -61,7 +57,7 @@ public class MyLanguageDetector extends BaseLangDetector {
 				LOG.warn("Unable to read resources for language " + lang);
 			}
 		}
-	}
+	}	
 
 	public static MyLanguageDetector getInstance() {
 		return INSTANCE;
