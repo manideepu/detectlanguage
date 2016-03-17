@@ -10,8 +10,8 @@
 	<description>Detect Language Project</description>
 	<url>http://maven.apache.org</url>
 	<modules>
-		<module>detectlanguagepoc</module>
 		<module>detectlanguagecore</module>
+		<module>detectlanguagepoc</module>		
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
